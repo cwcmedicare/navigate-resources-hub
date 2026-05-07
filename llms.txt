@@ -1,0 +1,121 @@
+# llms.txt — Navigate Health Insurance Services · Resources Hub
+# Rules of the House for AI agents building or editing pages on this site.
+# Last updated: 2026-05-06
+
+## Site overview
+
+This is the Medicare Resources Hub for Navigate Health Insurance Services
+(DBA of CWC Medicare LLC), an independent health insurance agency.
+Owner/operator: Chris Cockey, licensed health insurance agent.
+Domain: learn.navigatehealthinsurance.com
+Host: Netlify (free tier)
+Main marketing site (separate): navigatehealthinsurance.com (Cloudflare Pages)
+
+## 1. Branding — use the design system, nothing else
+
+All styling MUST use the CSS custom properties defined in `/styles.css`.
+Never hard-code colors, font families, font sizes, spacing values, or
+border-radius values. If you need a token that doesn't exist, propose it
+as an addition to :root — do not inline a one-off value.
+
+Key variables:
+  --brand-primary     #1B3A52  (navy)
+  --brand-accent      #E74C4C  (red — CTAs only)
+  --brand-blue        #5FB8E8  (links, info callouts)
+  --brand-cream       #FAF6F1  (page background)
+  --text-main         #1E2A35  (body copy)
+  --text-secondary    #1B3A52  (secondary copy — navy, NEVER gray)
+  --font-heading      Fraunces
+  --font-body         Inter
+
+Senior accessibility rule: NEVER use gray text. All text must be black,
+near-black (#1E2A35), or navy (#1B3A52). This is a medical-audience
+accessibility requirement, not a style preference.
+
+## 2. HIPAA — no native Netlify Forms
+
+Do NOT use Netlify's built-in form handling (the `netlify` attribute,
+`data-netlify="true"`, Netlify Functions that process form submissions,
+etc.). Submitted data would be stored on Netlify infrastructure, which
+is not configured for HIPAA compliance in this deployment.
+
+For any lead capture, contact form, RSVP, or data-collection need:
+  → Use a Google Forms iframe embed.
+  → The component class is `.form-embed` (defined in styles.css).
+  → See `spoke-template.html` for the reference implementation.
+
+If a page does not need lead capture, omit the form section entirely.
+
+## 3. Compliance — TPMO disclaimer on every page
+
+Every page deployed to this site MUST include the TPMO (Third-Party
+Marketing Organization) disclaimer in the footer. The canonical text
+lives in the `<div class="tpmo-disclaimer">` block in `index.html`.
+
+Copy it exactly. Do not paraphrase, abbreviate, or restyle it.
+The disclaimer must be visible (not hidden behind a toggle or accordion).
+
+CMS requires the generic website TPMO disclaimer to be used VERBATIM
+on pages where the visitor's location is unknown. Do NOT add state
+lists, carrier counts, or any other modifications to paragraph one.
+
+Exact disclaimer text (two paragraphs):
+
+  "We do not offer every plan available in your area. Any information
+  we provide is limited to those plans we do offer in your area.
+  Please contact Medicare.gov or 1-800-MEDICARE (1-800-633-4227) to
+  get information on all of your options."
+
+  "Not connected with or endorsed by the United States government or
+  the federal Medicare program. This is a solicitation of insurance.
+  A licensed agent may contact you. Navigate Health Insurance Services
+  is a DBA of CWC Medicare LLC."
+
+## 4. Structure — subfolder convention
+
+New resource pages (spokes) must live in their own subfolder with an
+`index.html` file. This gives clean URLs on Netlify:
+
+  /legislative-timeline/index.html  →  /legislative-timeline/
+  /getting-started/index.html       →  /getting-started/
+  /cost-estimator/index.html        →  /cost-estimator/
+
+Start every new spoke from `spoke-template.html`. That template already
+includes: the shared stylesheet link, header, Google Form placeholder,
+footer with TPMO disclaimer, and mobile-optimized viewport meta.
+
+Static assets (images, icons, PDFs) go in `/assets/`.
+
+## 5. CTA and copy rules
+
+- Primary CTA: "Schedule an Appointment" → Calendly link
+  (https://calendly.com/navigate-insurance)
+- Never put the word "free" in a button label. "Free" is fine in body
+  copy — just not on the button itself.
+- Never use the word "consultation." Use "appointment" or "meeting."
+- Refer to Chris as "licensed health insurance agent" (short form) in
+  most contexts. Use "licensed, independent health insurance agent"
+  (long form) only in bio/about sections.
+- Voice: first-person ("I'm Chris…"), low-fluff, patient, analytical.
+  No hype, no superlatives applied to plans, no scare tactics.
+- Every piece of content must include a clear CTA. Educational content
+  without a next step works against the business.
+
+## 6. Contact information
+
+  Name:  Chris Cockey
+  Phone: (303) 997-2505
+  Email: chris@navigatehealthinsurance.com
+  Calendly: https://calendly.com/navigate-insurance
+  Business: Navigate Health Insurance Services (DBA of CWC Medicare LLC)
+  States: CO, CA, NV, KS
+
+Do NOT use cwcmedicare@gmail.com on any client-facing page.
+
+## 7. Technical notes
+
+- Google Fonts CDN is used (Fraunces + Inter). No self-hosted font files.
+- The site is static HTML/CSS. No build step, no framework.
+- Netlify handles SSL automatically for the custom domain.
+- The root `styles.css` is shared across all pages via absolute path
+  (`/styles.css`), so spokes in subfolders still reference it correctly.
