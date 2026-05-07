@@ -1,2 +1,2 @@
 # navigate-resources-hub
-Educational Medicare resources hub — Navigate Health Insurance Services
+Educational resources hub — Navigate Health Insurance Services
